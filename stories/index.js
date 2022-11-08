@@ -10,6 +10,8 @@ import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
 import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
+import Appointment from "components/appointment/index.js";
+
 
 storiesOf("Button", module)
   .addParameters({
@@ -61,13 +63,13 @@ storiesOf("Button", module)
       backgrounds: [{ name: "dark", value: "#222f3e", default: true }],
     })
     .add("Monday", () => (
-      <DayList days={days} day={"Monday"} setDay={action("setDay")} />
+      <DayList days={days} day={"Monday"} onChange={action("setDay")} />
     ))
     .add("Tuesday", () => (
-      <DayList days={days} day={"Tuesday"} setDay={action("setDay")} />
+      <DayList days={days} day={"Tuesday"} onChange={action("setDay")} />
     ))
     .add("Wednesday", () => (
-        <DayList days={days} day={"Wednesday"} setDay={action("setDay")} />
+        <DayList days={days} day={"Wednesday"} onChange={action("setDay")} />
     ));
 
     const interviewer = {
@@ -114,23 +116,34 @@ storiesOf("Button", module)
       ];
       
       storiesOf("InterviewerList", module)
-        .addParameters({
-          backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
-        })
-        .add("Initial", () => (
-          <InterviewerList
-            interviewers={interviewers}
-          />
-        ))
-        .add("Selected", () => (
-          <InterviewerList
-            interviewers={interviewers}
-            interviewer={3}
-          />
-        ))
-        .add("Clickable", () => (
-          <InterviewerList
-            interviewers={interviewers}
-            setInterviewer={action("setInterviewer")}
-          />
-        ));
+      .addParameters({
+        backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
+      })
+      .add("Initial", () => (
+        <InterviewerList
+          interviewers={interviewers}
+        />
+      ))
+      .add("Selected", () => (
+        <InterviewerList
+          interviewers={interviewers}
+          value={3}
+        />
+      ))
+      .add("Clickable", () => (
+        <InterviewerList
+          interviewers={interviewers}
+          onChange={action("setInterviewer")}
+        />
+      ));
+  
+
+      storiesOf("Appointment", module)
+      .addParameters({
+        backgrounds: [{ name: "white", value: "#fff", default: true }]
+      })
+      .add("Appointment", () => <Appointment />)
+      .add("Appointment with Time", () => (
+          <Appointment 
+            time={"12pm"}
+          />))

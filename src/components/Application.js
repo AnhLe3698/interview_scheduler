@@ -36,8 +36,8 @@ export default function Application(props) {
       <nav className="sidebar__menu">
         <DayList
           days={days}
-          day={dayCurr}
-          setDay={day => setDayCurr(day)}
+          value={dayCurr}
+          onChange={day => setDayCurr(day)}
         />
       </nav>
       <img
