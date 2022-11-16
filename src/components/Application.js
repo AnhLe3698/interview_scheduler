@@ -3,7 +3,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./appointment";
-import { getAppointmentsForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 
 export default function Application(props) {
@@ -11,7 +11,8 @@ export default function Application(props) {
     day: "Tuesday",
     days: [],
     appointments: {},
-    dailyAppointments: []
+    dailyAppointments: [],
+    interviewers: {}
   });
 
   const [dailyAppointments, setDailyAppointments] = useState([]);
@@ -19,19 +20,21 @@ export default function Application(props) {
   useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
-      axios.get("/api/appointments")
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers")
     ]).then((all) => {
       const days = [...all[0].data];
       // console.log(days);
       const appointments = {...all[1].data};
-      console.log(appointments)
-      setState(prev => ({'day': prev.day, days: days, appointments:appointments }));
-      setDailyAppointments([...getAppointmentsForDay({days: days, appointments:appointments}, state.day)])
+      console.log(all[2].data)
+      setState(prev => ({'day': prev.day, days: days, appointments:appointments, interviewers:all[2].data }));
+      setDailyAppointments(getAppointmentsForDay({days: days, appointments:appointments}, state.day))
+      console.log(getAppointmentsForDay({days: days, appointments:appointments}, state.day))
     })
   }, [])
   
   useEffect(() => {
-    setDailyAppointments((prev) => {
+    setDailyAppointments(() => {
       return [...getAppointmentsForDay(state, state.day)]
     });
   }, [state])
