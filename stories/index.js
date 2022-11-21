@@ -192,6 +192,11 @@ storiesOf("Appointment", module)
       />
     )
   })
+  .add("Status", () => {
+    return (
+      <Status/>
+    )
+  })
   .add("Create", () => {
     return (
       <Form 

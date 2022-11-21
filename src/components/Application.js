@@ -3,7 +3,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay, getInterviewersListForDay } from "helpers/selectors";
 
 
 export default function Application(props) {
@@ -14,6 +14,62 @@ export default function Application(props) {
     dailyAppointments: [],
     interviewers: {}
   });
+
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios.delete(`/api/appointments/${id}`, appointment).then(response => {
+      setState(() => {
+        setDailyAppointments(() => {
+          console.log(state)
+          return [...getAppointmentsForDay(state, state.day)]
+        });
+        return {
+        ...state,
+        appointments,
+        }
+      })  
+    })
+  }
+
+  function bookInterview(id, interview) {
+    console.log(state);
+
+    // something is missing here
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    
+    return axios.put(`/api/appointments/${id}`, appointment).then(response => {
+      setState(() => {
+        setDailyAppointments(() => {
+          console.log(state)
+          return [...getAppointmentsForDay(state, state.day)]
+        });
+        return {
+        ...state,
+        appointments,
+        }
+      })  
+    })
+    
+    
+    console.log('booking',id, interview);
+  }
 
   const [dailyAppointments, setDailyAppointments] = useState([]);
 
@@ -26,15 +82,20 @@ export default function Application(props) {
       const days = [...all[0].data];
       // console.log(days);
       const appointments = {...all[1].data};
-      console.log(all[2].data)
+      console.log('API appointments', all[1].data)
       setState(prev => ({'day': prev.day, days: days, appointments:appointments, interviewers:all[2].data }));
-      setDailyAppointments(getAppointmentsForDay({days: days, appointments:appointments}, state.day))
-      console.log(getAppointmentsForDay({days: days, appointments:appointments}, state.day))
+      setDailyAppointments(() => {
+        const appointmentForTheDay = getAppointmentsForDay({days: days, appointments:appointments}, state.day);
+        console.log('appointment array', appointmentForTheDay);
+        return appointmentForTheDay;
+      })
+      // console.log(getAppointmentsForDay({days: days, appointments:appointments}, state.day))
     })
   }, [])
   
   useEffect(() => {
     setDailyAppointments(() => {
+      console.log(state)
       return [...getAppointmentsForDay(state, state.day)]
     });
   }, [state])
@@ -54,8 +115,13 @@ export default function Application(props) {
           value={state.day}
           // setDay={...}
           onChange={day => setState((prev) => {
+            
             let dayCount = {...prev}
             dayCount['day'] = day;
+            setDailyAppointments(() => {
+              console.log(state)
+              return [...getAppointmentsForDay(dayCount, day)]
+            });
             return dayCount;
           })}
         />
@@ -70,7 +136,10 @@ export default function Application(props) {
         {
           
           dailyAppointments.map((appointment) => {
-            return (<Appointment key={appointment.id}  {...appointment}/>)})
+            console.log('hello', appointment);
+            const interviewersArray = getInterviewersListForDay(state, state.day);
+            console.log('hello interviewers', interviewersArray);
+            return  (<Appointment key={appointment.id}  {...appointment} interviewers={interviewersArray} bookInterview={bookInterview} cancelInterview={cancelInterview}/>)})
         }
         <Appointment key="last" time="5pm" />
       </section>
