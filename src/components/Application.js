@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./appointment";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay, getInterviewersListForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterviewersListForDay } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
 export default function Application(props) {
@@ -32,13 +32,10 @@ export default function Application(props) {
         <DayList
           days={state.days}
           value={state.day}
-          // setDay={...}
           onChange={day => setState((prev) => {
-            
             let dayCount = {...prev}
             dayCount['day'] = day;
             setDailyAppointments(() => {
-              console.log(state)
               return [...getAppointmentsForDay(dayCount, day)]
             });
             return dayCount;
@@ -55,9 +52,7 @@ export default function Application(props) {
         {
           
           dailyAppointments.map((appointment) => {
-            console.log('hello', appointment);
             const interviewersArray = getInterviewersListForDay(state, state.day);
-            console.log('hello interviewers', interviewersArray);
             return  (<Appointment key={appointment.id}  {...appointment} interviewers={interviewersArray} bookInterview={bookInterview} cancelInterview={cancelInterview}/>)})
         }
         <Appointment key="last" time="5pm" />

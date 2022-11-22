@@ -42,7 +42,7 @@ export function getInterview(state, interview) {
 }
 
 export function getInterviewersForDay(state, day) {
-  //... returns an array of appointments for that day
+  //... returns an array of Interviewers for that day
   let interviewerObj = [];
   let appointments = getAppointmentsForDay(state, day);
 
@@ -65,7 +65,7 @@ export function getInterviewersListForDay(state, day) {
   //... returns an array of appointments for that day
   let interviewerObj = [];
   const resObj = state.days.filter(resDay => resDay.name === day)[0]
-  console.log('resObj ', resObj.interviewers)
+  
   for(const interviewerId of resObj.interviewers) {
     
     interviewerObj.push(state.interviewers[`${interviewerId}`]);

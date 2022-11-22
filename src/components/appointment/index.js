@@ -35,7 +35,18 @@ export default function Appointment(props) {
     transition(SAVING);
     props
     .bookInterview(props.id, interview)
-    .then(() => transition(SHOW))
+    .then(() => {
+      
+      // success.setState(() => {
+        
+      //   return {
+      //     ...success.state,
+      //     days: success.findSpots(success.state.days, success.appointments)
+      //   }
+      // })
+      // return transition(SHOW)
+      return transition(SHOW)
+    })
     .catch(error => transition(ERROR_SAVE, true));
   }
 

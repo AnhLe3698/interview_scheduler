@@ -27,7 +27,6 @@ export default function Form(props) {
             id="student-name"
             placeholder="Enter Student Name"
             onChange={() => {setStudent(document.getElementById("student-name").value)
-            console.log(student);
             }}
             value={student}
           />
