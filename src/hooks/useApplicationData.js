@@ -3,9 +3,8 @@ import axios from "axios";
 import { getAppointmentsForDay} from "helpers/selectors";
 
 export default function useApplicationData() {
-
-  const [dailyAppointments, setDailyAppointments] = useState([]);
-
+  
+  // State Object needs to be copied and then constructed before changing state
   const [state, setState] = useState({
     day: "Tuesday",
     days: [],
@@ -14,22 +13,34 @@ export default function useApplicationData() {
     interviewers: {}
   });
 
+  const [dailyAppointments, setDailyAppointments] = useState([]);
+
+  // This function checks for the current amount of spots remaining
+  // This will return a value that will update the state and more specifically
+  // the DayListItems
   function findSpots(days, appointments) {
-    const resultingArray = [];
+
+    const resultingArray = []; //Initializing our Days array
+
+    // for...of loop through the array of objects in days
     for(const dayInDays of days) {
-      let countSpots = 0;
+      let countSpots = 0; // Counts remaining spots
+      // looping though appoints
       for(const appIDs of dayInDays.appointments) {
+        // checks if the appointments at the appointment ids are null for a specific day
         if(appointments[`${appIDs}`].interview === null){
-          countSpots++;
+          countSpots++; 
         }
       }
       
+      // construct a days object and push onto the array
       resultingArray.push({
         ...dayInDays,
         spots: countSpots
       })
     }
-    console.log('hello ', resultingArray);
+    
+    // returns days array
     return resultingArray;
   }
 
@@ -48,16 +59,12 @@ export default function useApplicationData() {
       console.log(response)
       console.log(state.days)
       console.log(appointments)
-      // console.log('hello',findSpots(state.days, appointments));
+
       setState(() => {
         setDailyAppointments(() => {
           return [...getAppointmentsForDay(state, state.day)]
         });
         
-        // const days = [...state.days];
-        // if (response.status === 204) {
-        //   days = findSpots(days, appointments);
-        // }
         return {
         ...state,
         days: findSpots(state.days, appointments),
@@ -85,17 +92,12 @@ export default function useApplicationData() {
       console.log(response)
       console.log(state.days)
       console.log(appointments)
-      // console.log('hello',findSpots(state.days, appointments));
       setState(() => {
         setDailyAppointments(() => {
           
           return [...getAppointmentsForDay(state, state.day)]
         });
         findSpots(state.days, appointments);
-        // const days = [...state.days];
-        // if (response.status === 204) {
-        //   days = findSpots(days, appointments);
-        // }
         return {
         ...state,
         days: findSpots(state.days, appointments),
