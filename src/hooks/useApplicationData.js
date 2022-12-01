@@ -10,7 +10,7 @@ export default function useApplicationData() {
   
   // State Object needs to be copied and then constructed before changing state
   const [state, setState] = useState({
-    day: "Tuesday",
+    day: "Monday",
     days: [],
     appointments: {},
     dailyAppointments: [],

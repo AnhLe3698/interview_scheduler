@@ -7,7 +7,7 @@ import React from "react";
   We import our helper functions from the react-testing-library
   The render function allows us to render Components
 */
-import { render, waitForElement } from "@testing-library/react";
+import { render, waitForElement, fireEvent, getAllByTestId} from "@testing-library/react";
 
 /*
   We import the component that we are testing
@@ -17,22 +17,20 @@ import Appointment from "components/appointment/index"
 /*
   A test that renders a React Component
 */
-it("defaults to Monday and changes the schedule when a new day is selected", () => {
-  const { getByText } = render(<Application />);
 
-  return waitForElement(() => getByText("Monday"));
-});
 
 describe("Appointment", () => {
   it("renders without crashing", () => {
     render(<Appointment />);
   });
 
-  // it("does something it is supposed to do", () => {
-  //   // ...
-  // });
 
-  // it("does something else it is supposed to do", () => {
-  //   // ...
-  // });
+  it("defaults to Monday and changes the schedule when a new day is selected", async () => {
+    const { getByText } = render(<Application />);
+  
+    await waitForElement(() => getByText("Monday"))
+  
+    fireEvent.click(getByText("Tuesday"));
+    expect(getByText("Leopold Silvers")).toBeInTheDocument();
+  });
 });
