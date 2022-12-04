@@ -25,6 +25,7 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
   
+  // Saving function handles and booking and silaying via a promise
   function save(name, interviewer) {
     
     const interview = {
@@ -63,6 +64,7 @@ export default function Appointment(props) {
   function onClose() {
     back();
   }
+
   return (
     <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
@@ -71,10 +73,15 @@ export default function Appointment(props) {
       }} />}
       {mode === SAVING && <Status message={'Saving'}></Status>}
       {mode === DELETING && <Status message={'Deleting'}></Status>}
+      
       {mode === ERROR_DELETE && <Error message={'Could not cancel Appointment'} onClose={onClose}></Error>}
+
       {mode === ERROR_SAVE && <Error message={'Could not save Appointment'}   onClose={onClose}></Error>}
+
       {mode === CREATE && <Form onCancel={back} interviewers={props.interviewers} onSave={save} />}
+
       {mode === EDIT && <Form student={props.interview.student} interviewers={props.interviewers} onCancel={back} interviewer={props.interview.interviewer} onSave={save} />}
+
       {mode === SHOW && (
         <Show
           

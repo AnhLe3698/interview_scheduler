@@ -101,7 +101,3 @@ export default {
   })
 }
 
-// const appointment = {
-//   ...state.appointments[id],
-//   interview: { ...interview }
-// };

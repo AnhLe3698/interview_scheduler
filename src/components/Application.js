@@ -6,9 +6,9 @@ import Appointment from "./appointment";
 import { getAppointmentsForDay, getInterviewersListForDay } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
-export default function Application(props) {
+export default function Application() {
   
-
+  // Import helper functions and states
   const {
     state,
     setState,
@@ -50,7 +50,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {
-          
+          // Cunstructing the list of daily appointments depending on the day of week
           dailyAppointments.map((appointment) => {
             const interviewersArray = getInterviewersListForDay(state, state.day);
             return  (<Appointment key={appointment.id}  {...appointment} interviewers={interviewersArray} bookInterview={bookInterview} cancelInterview={cancelInterview}/>)})

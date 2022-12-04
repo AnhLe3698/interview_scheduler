@@ -138,7 +138,7 @@ export default function useApplicationData() {
         }));
 
       setDailyAppointments(() => {
-        const appointmentForTheDay = getAppointmentsForDay({days: days, appointments:appointments}, state.day);
+        const appointmentForTheDay = getAppointmentsForDay({days: days, appointments:appointments});
         return appointmentForTheDay;
       })
 

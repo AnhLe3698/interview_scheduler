@@ -20,13 +20,13 @@ export function getInterview(state, interview) {
   } else {
     let interviewerName = '';
     let avatar = '';
-    let interviewer;
+   
     for (const interviewers in state.interviewers) {
 
       if (interviewers === interview.interviewer) {
         interviewerName = state.interviewers[`${interviewers}`].name;
         avatar = state.interviewers[`${interviewers}`].avatar;
-        interviewer = interviewers;
+        
       }
     }
 
