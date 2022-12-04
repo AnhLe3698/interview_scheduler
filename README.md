@@ -3,16 +3,17 @@ Scheduler is a basic application created for LightHouseLabs.ca ReactJS, StoryBoo
 
 ## Screenshots
 
-Main Page
+### Main Page
 !["screenshot description"](./resources/main.png)
 
-Add/Edit Appointments
+### Add/Edit Appointments
 !["screenshot description"](./resources/add-edit.png)
 
-Delete Appointments
+### Delete Appointments
 !["screenshot description"](./resources/Delete.png)
 
-Select Day of the Week and show Spots remaining
+
+### Select Day of the Week and show Spots remaining
 !["screenshot description"](./resources/select-day.png)
 
 ## Setup
